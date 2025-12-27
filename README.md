@@ -10,7 +10,7 @@
 # STEPS TO RUN LOCALLY
 
 ```
-git clone 
+git clone https://github.com/Tooomat/node-ts-rest-api-template.git
 ```
 
 install dependencies:
