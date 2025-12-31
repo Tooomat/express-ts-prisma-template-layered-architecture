@@ -8,7 +8,7 @@ export class ExampleController {
 
     static async controller(req: Request, res: Response, next: NextFunction) {
         try {
-            const request: ExampleRequest = req.body()
+            const request: ExampleRequest = req.body
 
             const result = await ExampleService.service(request)
 

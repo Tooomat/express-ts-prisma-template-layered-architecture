@@ -1,7 +1,7 @@
 import express from "express"
-import { examplePublicRouter } from "./public/example.route"
+import { ExampleController } from "../../controller/example.controller"
 
 export const publicRouter = express.Router()
 
 // router tanpa/tidak perlu login
-publicRouter.use("/api/example", examplePublicRouter)
+publicRouter.post("/api/example", ExampleController.controller)

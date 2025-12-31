@@ -1,6 +1,6 @@
 import * as env from "../config/env"
-import { PrismaPg } from '@prisma/adapter-pg'
-// import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+// import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 import { PrismaClient } from '../generated/prisma/client'
 import { logger } from "./logging";
 
@@ -8,19 +8,18 @@ const isDev = env.config.NODE_ENV === "development";
 const connectionString = `${env.config.DATABASE_URL}`
 
 // use this if database using MYSQL
-// const adapter = new PrismaMariaDb({ 
-//   host: env.config.DB_HOST,
-//   port: env.config.DB_PORT,
-//   user: env.config.DB_USER,
-//   password: env.config.DB_PASSWORD,
-//   database: env.config.DB_NAME,
-
-// })
+const adapter = new PrismaMariaDb({ 
+  host: env.config.DB_HOST,
+  port: env.config.DB_PORT,
+  user: env.config.DB_USER,
+  password: env.config.DB_PASSWORD,
+  database: env.config.DB_NAME,
+})
 
 // use this if database using POSTGRES
-const adapter = new PrismaPg({ 
-  connectionString 
-})
+// const adapter = new PrismaPg({ 
+//   connectionString 
+// })
 
 export const prismaClient = new PrismaClient({ 
     adapter,
