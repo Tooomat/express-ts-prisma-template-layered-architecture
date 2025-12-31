@@ -40,6 +40,11 @@ If you want to start the build version, run it with :
 npm run start
 ```
 
+# run test file
+```
+npm run test
+```
+
 # Creating new feature 
 
 - Create a new schema (if needed) on prisma/schema.prisma
