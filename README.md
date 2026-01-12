@@ -41,15 +41,9 @@ docker compose -f docker-compose.dev.yml up -d --build
 
 - TEST
 ```
-docker compose -f docker-compose.test.yml up -d --build --abort-on-container-exit
+docker compose -f docker-compose.test.yml up --abort-on-container-exit
 
 ```
-or
-```bash
-docker compose -f docker-compose.test.yml up -d --build --abort-on-container-exit
-
-```
-
 - PRODUCTION
 ```
 docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
@@ -75,12 +69,19 @@ If you want to start the build version, run it with :
 npm run start
 ```
 
-# run test file 
+# run test file
 ```
 npm run test
 ```
 
 # Creating new feature 
+- Create your first migration to set up the database tables:
+```
+npx prisma migrate dev --name init
+
+
+npx prisma generate
+```
 
 - Create a new schema (if needed) on prisma/schema.prisma
 migrate schema with command:

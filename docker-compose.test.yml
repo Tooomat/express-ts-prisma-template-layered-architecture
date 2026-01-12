@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16
@@ -11,7 +9,7 @@ services:
     ports:
       - "5433:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test"]
+      test: ["CMD-SHELL", "pg_isready -U test -d test_db"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,10 +22,11 @@ services:
     command: redis-server --save "" --appendonly no
 
   app:
-    container_name: ${APP_NAME}-test
-    build:
-      context: .
-      target: test
+    image: node:20-alpine
+    container_name: app-test
+    working_dir: /app
+    volumes:
+      - .:/app
     command: npm run test
     env_file:
       - .env.test
