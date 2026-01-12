@@ -2,6 +2,7 @@
 - Language: Typescript
 - ORM : Prisma
 - Database : MySQL
+- Cache : Redis
 - Validation : Zod
 - HTTP Framework : Express
 - Logging : Winston
@@ -26,7 +27,41 @@ run prisma db migration with:
 npx prisma migrate dev
 ```
 
-# Running the app
+# Running the app with DOCKER
+- DEVELOPMENT
+```
+docker compose --env-file .env.development -f docker-compose.dev.yml up -d --build
+
+```
+or
+```bash
+docker compose -f docker-compose.dev.yml up -d --build
+
+```
+
+- TEST
+```
+docker compose -f docker-compose.test.yml up -d --build --abort-on-container-exit
+
+```
+or
+```bash
+docker compose -f docker-compose.test.yml up -d --build --abort-on-container-exit
+
+```
+
+- PRODUCTION
+```
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
+
+```
+or
+```bash
+docker compose -f docker-compose.prod.yml up -d
+
+```
+
+# Running the app without DOCKER (YOU HAVE TO CHANGE ENV FILE)
 
 By Default, to run the app with hot-reload simply run
 
@@ -40,7 +75,7 @@ If you want to start the build version, run it with :
 npm run start
 ```
 
-# run test file
+# run test file 
 ```
 npm run test
 ```
