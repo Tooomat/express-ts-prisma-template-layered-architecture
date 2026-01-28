@@ -32,7 +32,8 @@ services:
       - redis-data-test:/data
 
   app-test:
-    image: node-ts-rest-api:test
+    # image: node-ts-rest-api:test
+    image: node:20-alphine
     container_name: app-test
     build:
       context: .
