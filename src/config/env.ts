@@ -48,8 +48,6 @@ export interface EnvConfig {
   REDIS_PORT: number
   REDIS_PASSWORD: string
   REDIS_DB: number
-
-  RESEND_API_KEY: string
 }
 
 function required(key: string): string {
@@ -113,6 +111,4 @@ export const config: EnvConfig = {
   REDIS_PORT: Number(process.env.REDIS_PORT || 6379),
   REDIS_PASSWORD: required("REDIS_PASSWORD"),
   REDIS_DB: Number(process.env.REDIS_DB || 0),
-
-  RESEND_API_KEY: required("RESEND_API_KEY")
 }
