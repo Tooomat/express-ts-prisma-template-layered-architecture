@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { ExampleRequest, ExampleResponse } from "../model/example.model";
-import { ExampleService } from "../service/example.service";
-import { success } from "zod";
-import { success_handler, WebResponse } from "../web/http/web-response.http";
+import { success_handler } from "../../web/http/web-response.http";
+import { ExampleService } from "../../service/example.service";
+import { ExampleRequest } from "../../model/example.model";
 
 export class ExampleController {
-
     static async controller(req: Request, res: Response, next: NextFunction) {
         try {
             const request: ExampleRequest = req.body

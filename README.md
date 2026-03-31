@@ -1,6 +1,6 @@
 # Node.js TypeScript REST API Template
 
-Template backend REST API berbasis **Node.js + TypeScript** dengan arsitektur clean (controller–service–model), siap untuk **development, testing, dan production** menggunakan **Docker**.
+Template backend REST API berbasis **Node.js + TypeScript** dengan **clean arsitektur layer-based Monolith** (controller–service–repository/model-database), siap untuk **development, testing, dan production** menggunakan **Docker**.
 
 ---
 
@@ -23,8 +23,8 @@ Pastikan tools berikut sudah terinstall:
 
 * Node.js **v18+**
 * Docker & Docker Compose
-* Postgres (jika tidak pakai Docker)
-* Redis (jika tidak pakai Docker)
+* Postgres 
+* Redis
 
 ---
 
@@ -53,7 +53,6 @@ Salin file environment contoh:
 
 ```bash
 cp .env.example .env.development
-cp .env.example .env.development.docker
 cp .env.example .env.test
 cp .env.example .env.production
 ```
@@ -67,25 +66,23 @@ Lalu sesuaikan isi `.env` terutama:
 
 ---
 
-### 4. Prisma Migration (Local Database)
-
-```bash
-npx prisma migrate dev
-npx prisma generate
-```
+### 4. Prisma Migration (LOCAL)
  
-Atau via npm script:
-
 ```bash
 npm run prisma:migrate:dev
 npm run prisma:generate:dev
 ```
 
+### 5. Seeder (LOCAL)
+
+```bash
+npm run prisma:seed:dev
+```
 ---
 
-### 5. Run App (Local)
+### 6. Run App (LOCAL)
 
-#### Development (Hot Reload)
+#### DEVELOPMENT (Hot Reload)
 
 ```bash
 npm run dev
@@ -93,6 +90,17 @@ npm run dev
 
 ### Testing
 
+- migrate and generate
+```bash
+npm run prisma:migrate:test
+npm run prisma:generate:test
+```
+- seed to test
+```bash
+npm run prisma:seed:test
+```
+
+- run 
 ```bash
 npm run test
 ```
@@ -102,33 +110,31 @@ Test file tertentu:
 ```bash
 npm run test -- test/auth.login.test.ts
 ```
-
-#### Production (Tanpa Docker)
-
-```bash
-npm run build
-npm run start
-```
-
 ---
 
 ## Running with DOCKER
 
 - DEVELOPMENT
 
+#### Build Services
+
 ```bash
-docker compose --env-file .env.development.docker -f docker-compose.dev.yml up -d --build
+docker compose --env-file .env.development -f docker-compose.dev.yml up -d --build 
 ```
 
 atau simple:
 ```bash
-docker compose -f docker-compose.dev.yml up -d --build
-
+docker compose -f docker-compose.dev.yml up -d --build 
 ```
 
 Atau via npm:
 ```bash
 npm run dev:docker:up
+```
+
+#### Run Srvices
+```bash
+npm run dev:docker:start
 ```
 
 #### Prisma migrate (DEV Docker)
@@ -137,7 +143,18 @@ npm run dev:docker:up
 docker exec -it app-dev npx prisma migrate dev
 ```
 
-#### Stop & Remove Container
+#### Generate Prisma
+```bash
+docker exec -it app-dev npx prisma generate 
+```
+
+#### Prisma seeder Dev
+
+```bash
+docker exec app-dev npm run prisma:seed:dev
+```
+
+#### Restart & Remove Container
 
 ```bash
 npm run dev:docker:down
@@ -148,7 +165,11 @@ npm run dev:docker:down
 ```bash
 npm run dev:docker:down:volume
 ```
+#### Stop container
 
+```bash
+npm run dev:docker:stop
+```
 ---
 
 - TESTING (Jest + Prisma + Docker)
@@ -170,30 +191,70 @@ Via npm:
 npm run test:docker:up
 ```
 
+#### remove container test
+```bash
+npm run test:docker:down:volume
+```
 ---
 
 - PRODUCTION (Docker)
 
-#### Build Image
+1. Build Image
 
 ```bash
 docker build -t serba-backend:latest .
 ```
-
-#### Run Container
+atau build version:
 
 ```bash
-docker run -d --name serba-backend --env-file .env.production -p 8080:8080 serba-backend:latest
+docker build -t serba-backend:1.0.0 .
 ```
+
+2. Run Container
+
+```bash
+docker run -d --name serba-backend --env-file .env.production -p 8080:8080 --restart unless-stopped serba-backend:latest
+```
+--restart unless-stopped untuk:
+
+* server reboot → container auto hidup lagi
 
 ---
 
 ### Production (Docker Compose – Server)
 
+1. Run Services
 ```bash
 docker compose --env-file .env.production -f docker-compose.prod.yml up -d
 ```
 
+2. check status
+```bash
+docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml logs -f app
+```
+3. Prisma Migration (kalau tidak otomatis)
+```bash
+docker compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
+```
+4. Prisma seeder prod
+
+```bash
+docker exec -it app-prod npm run prisma:seed:prod
+```
+
+5. Restart container (tanpa hapus data)
+```bash
+docker compose -f docker-compose.prod.yml restart app
+```
+
+6. Update Deployment Flow
+```bash
+git pull
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
+```
 ---
 
 ## Creating New Feature (Guideline)
@@ -218,15 +279,28 @@ npx prisma generate
 
 6. Buat controller di `/controller`
 
-7. Buat route:
-
-* `/route/public` → tanpa auth
-* `/route/private` → perlu auth
+7. Buat route di `/route`
 
 8. Register route ke:
 
 * `route/public-api-registry.route.ts`
 * `route/private-api-registry.route.ts`
+
+9. Create seeder di `prisma/seeds`
+
+10. Create security di `src/web/middleware`
+
+11. Create config di `src/config`
+
+12. Create Http response di `src/web/http/web-response.http`
+
+13. Create Handling Response Error di `src/web/middleware/web-error-handler.middleware` dan update service response error di `src/error/service.error`
+
+14. Mengubah Postgre ke Mysql di `src/application/database.ts`
+
+15. Update logger di `src/application/logging.ts`
+
+16. 
 
 ---
 
