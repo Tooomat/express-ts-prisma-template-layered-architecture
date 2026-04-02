@@ -271,7 +271,7 @@ npx prisma migrate dev
 npx prisma generate
 ```
 
-3. Buat model di folder `/model`
+3. Buat model di folder `/model`, untuk paging bisa dilihat di `/model/page.model.ts` dengan return paging bisa menggunakan `/src/utils/page.utils.ts`
 
 4. Buat validation (Zod) di `/validation`
 

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 import { ResponseError } from "../../error/service-response.error";
 import { logger } from "../../application/logging";
+import { securityLogger } from "../../utils/logging.utils";
 
 const getStatusMessage = (status: number): string => {
     const statusMessages: Record<number, string> = {
