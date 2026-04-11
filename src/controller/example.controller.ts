@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { success_handler } from "../../web/http/web-response.http";
-import { ExampleService } from "../../service/example.service";
-import { ExampleRequest } from "../../model/example.model";
-import { securityLogger } from "../../utils/logging.utils";
+import { success_handler } from "../web/http/web-response.http";
+import { ExampleService } from "../service/example.service";
+import { securityLogger } from "../utils/logging.utils";
+import { ExampleRequest } from "../validation/example.validation";
 
 export class ExampleController {
     static async controller(req: Request, res: Response, next: NextFunction) {

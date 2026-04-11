@@ -8,8 +8,8 @@ import {
     hppMiddleware, 
     xssProtection 
 } from "../web/middleware/security.middleware";
-import { requestLogger } from "./logging";
 import { config } from "../config/env";
+import { requestLogger } from "../web/middleware/logging.middleware";
 
 const isProd = config.NODE_ENV === 'production'
 

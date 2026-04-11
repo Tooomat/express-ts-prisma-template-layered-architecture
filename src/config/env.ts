@@ -8,7 +8,7 @@ const isDocker = process.env.DOCKER === 'true'
 
 const envFileMap: Record<string, string> = {
   development: isDocker ? '.env.development.docker' : '.env.development.local',
-  production: '.env.production',
+  production: '.env',
   test: isDocker ? '.env.test.docker' : '.env.test.local',
 }
 
