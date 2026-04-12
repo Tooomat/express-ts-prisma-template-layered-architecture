@@ -87,8 +87,7 @@ Layer yang digunakan:
 │   │   ├── page.model.ts      # Tipe Paging & Pagable untuk list endpoint
 │   │   └── example/
 │   │       ├── example-request.model.ts   # Request DTO
-│   │       ├── example-response.model.ts  # Response DTO + mapper
-│   │       └── index.ts                   # Barrel export
+│   │       └── example-response.model.ts  # Response DTO + mapper
 │   ├── service/
 │   │   └── example.service.ts
 │   ├── utils/
@@ -517,6 +516,7 @@ export class ContactValidation {
         // ...
     })
 }
+export type ContactRequest = z.infer<typeof ContactValidation.CREATE>;
 ```
 
 ### 4. Buat Service
