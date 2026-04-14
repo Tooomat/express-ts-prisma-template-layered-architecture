@@ -178,11 +178,11 @@ FRONTEND_URL=http://localhost:5173
 ### 4. Prisma Generate & Migrate
 
 ```bash
-# Generate Prisma client
-npm run prisma:generate:dev
-
 # Jalankan migrasi database
 npm run prisma:migrate:dev
+
+# Generate Prisma client
+npm run prisma:generate:dev
 ```
 
 ### 5. Seeder (opsional)
@@ -198,6 +198,37 @@ npm run dev
 ```
 
 Server berjalan di `http://localhost:3000`
+
+### 7. Testing
+
+Setup Test Environment:
+```bash
+cp .env.example .env.test.local
+```
+
+Edit `.env.test.local`:
+```bash
+DOCKER=false
+NODE_ENV=test
+DATABASE_URL="postgresql://postgres:password@localhost:5432/myapp_test"
+REDIS_HOST=localhost
+REDIS_PASSWORD=yourpassword
+```
+
+Jalankan Test:
+```bash
+# Migration database test
+npm run prisma:migrate:test
+
+# Seed data test (opsional)
+npm run prisma:seed:test
+
+# Jalankan semua test
+npm run test
+
+# Jalankan test file tertentu
+npm run test -- test/auth.login.test.ts
+```
 
 ---
 
@@ -217,15 +248,10 @@ atau via npm script:
 npm run dev:docker:up
 ```
 
-**Prisma migrate di dalam container:**
+**Prisma migrate dan genearte di dalam container:**
 
 ```bash
 docker exec -it app-dev npx prisma migrate dev
-```
-
-**Prisma generate di dalam container:**
-
-```bash
 docker exec -it app-dev npx prisma generate
 ```
 
@@ -235,15 +261,19 @@ docker exec -it app-dev npx prisma generate
 docker exec app-dev npm run prisma:seed:dev
 ```
 
-**Stop & remove container:**
+**Perintah container lainnya:**
 
 ```bash
+# Start container yang sudah ada
+npm run dev:docker:start
+
+# Stop container (data tetap ada)
+npm run dev:docker:stop
+
+# Hapus container (data tetap ada)
 npm run dev:docker:down
-```
 
-**Hapus container + volume (reset data):**
-
-```bash
+# Hapus container + volume (data hilang semua)
 npm run dev:docker:down:volume
 ```
 
@@ -251,6 +281,21 @@ npm run dev:docker:down:volume
 
 ### Testing
 
+Setup Test Environment:
+```bash
+cp .env.example .env.test.docker
+```
+
+Edit `.env.test.docker`:
+```bash
+DOCKER=false
+NODE_ENV=test
+DATABASE_URL="postgresql://postgres:password@localhost:5432/myapp_test"
+REDIS_HOST=localhost
+REDIS_PASSWORD=yourpassword
+```
+
+build service:
 ```bash
 docker compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
@@ -382,55 +427,6 @@ DATABASE_URL="mysql://user:password@localhost:3306/database_name"
 
 ```bash
 npm run prisma:studio:dev
-```
-
----
-
-## Testing
-
-### Jalankan Test Local
-
-```bash
-# Pastikan Postgres dan Redis test sudah berjalan
-npm run prisma:migrate:test
-npm run prisma:seed:test  # jika ada seeder
-
-npm run test
-```
-
-### Jalankan Test File Tertentu
-
-```bash
-npm run test -- test/example.test.ts
-```
-
-### Menulis Test
-
-Test file diletakkan di folder `test/` dengan ekstensi `.test.ts`.
-
-```typescript
-import supertest from "supertest"
-import * as server from "../src/application/server"
-
-describe('POST /api/example', () => {
-    it('should reject if request invalid', async () => {
-        const res = await supertest(server.webApp)
-            .post("/api/example")
-            .send({ username: "", password: "", name: "" })
-
-        expect(res.status).toBe(400)
-        expect(res.body.errors).toBeDefined()
-    })
-
-    it('should create user if request valid', async () => {
-        const res = await supertest(server.webApp)
-            .post("/api/example")
-            .send({ username: "testuser", password: "password123", name: "Test User" })
-
-        expect(res.status).toBe(201)
-        expect(res.body.data.username).toBe("testuser")
-    })
-})
 ```
 
 ---
@@ -600,6 +596,35 @@ async function seed() {
 
 Buat `test/contact.e2e.test.ts` dengan skenario happy path dan edge case.
 
+### Menulis Test
+
+Test file diletakkan di folder `test/` dengan ekstensi `.test.ts`.
+
+```typescript
+import supertest from "supertest"
+import * as server from "../src/application/server"
+
+describe('POST /api/example', () => {
+    it('should reject if request invalid', async () => {
+        const res = await supertest(server.webApp)
+            .post("/api/example")
+            .send({ username: "", password: "", name: "" })
+
+        expect(res.status).toBe(400)
+        expect(res.body.errors).toBeDefined()
+    })
+
+    it('should create user if request valid', async () => {
+        const res = await supertest(server.webApp)
+            .post("/api/example")
+            .send({ username: "testuser", password: "password123", name: "Test User" })
+
+        expect(res.status).toBe(201)
+        expect(res.body.data.username).toBe("testuser")
+    })
+})
+```
+
 ### 9. Tips Paging (untuk endpoint list)
 
 Gunakan `buildPaging()` dari `src/utils/page.utils.ts` dan type `Pagable<T>` dari `src/model/page.model.ts`:
@@ -645,7 +670,7 @@ Template ini mengimplementasikan OWASP Top 10 guidelines:
 | Auth (login/register) | 10 req / 15 menit | IP |
 | Private (authenticated) | 200 req / 15 menit | userId |
 
-> Di `development` dan `test`, rate limit lebih longgar secara otomatis.
+> Di `development` dan `test`, rate limit lebih longgar secara otomatis, anda bisa mengatur rate limit di `src/web/middleware/security.middleware.ts`.
 
 ---
 
