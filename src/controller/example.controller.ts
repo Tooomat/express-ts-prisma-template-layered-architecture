@@ -3,6 +3,7 @@ import { success_handler } from "../web/http/web-response.http";
 import { ExampleService } from "../service/example.service";
 import { ExampleRequest, ExampleResponse } from "../model/example.model";
 import { logger } from "../application/logging";
+import { errorUtils } from "../utils/error.utils";
 
 export class ExampleController {
     static async controller(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -18,6 +19,7 @@ export class ExampleController {
                 requestId: (req as any).requestId,
                 userId: (req as any).user?.id ?? 'anonymous',
                 reason: e instanceof Error ? e.message : "unknown_error",
+                origin: errorUtils.parseErrorOrigin(),
                 timestamp: new Date().toISOString()
             })
             next(e) // throw to middleware
