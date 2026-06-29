@@ -1,19 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import { success_handler } from "../web/http/web-response.http";
 import { ExampleService } from "../service/example.service";
-import { securityLogger } from "../utils/logging.utils";
-import { ExampleRequest } from "../validation/example.validation";
+import { ExampleRequest, ExampleResponse } from "../model/example.model";
+import { logger } from "../application/logging";
 
 export class ExampleController {
-    static async controller(req: Request, res: Response, next: NextFunction) {
+    static async controller(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const request: ExampleRequest = req.body
 
-            const result = await ExampleService.service(request)
-            securityLogger.loginSuccess("098", req.ip ?? 'unknown')
+            const result: ExampleResponse = await ExampleService.service(request, (req as any).requestId)
+
             success_handler(res, "success", result, 200)
         } catch (e) {
-            securityLogger.loginFailed("xxxgmail.com", req.ip ?? 'unknown', "reason")
+            logger.error({
+                type: "example:failed",
+                requestId: (req as any).requestId,
+                userId: (req as any).user?.id ?? 'anonymous',
+                reason: e instanceof Error ? e.message : "unknown_error",
+                timestamp: new Date().toISOString()
+            })
             next(e) // throw to middleware
         }
     }

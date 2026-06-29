@@ -7,5 +7,3 @@ export class ExampleValidation {
         name: z.string().min(1, 'name must be at least 1 characters').max(100),
     })
 }
-// Export type dari schema
-export type ExampleRequest = z.infer<typeof ExampleValidation.EXAMPLESCHEMA>;

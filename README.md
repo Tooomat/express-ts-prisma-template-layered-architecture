@@ -24,18 +24,18 @@ Template backend REST API berbasis **Node.js + TypeScript** dengan **clean arsit
 
 ## Tech Stack
 
-| Kategori | Library |
-|---|---|
-| Language | TypeScript |
-| HTTP Framework | Express v5 |
-| ORM | Prisma |
-| Database | PostgreSQL (bisa diganti MySQL/MariaDB) |
+| Kategori             | Library                                 |
+| -------------------- | --------------------------------------- |
+| Language             | TypeScript                              |
+| HTTP Framework       | Express v5                              |
+| ORM                  | Prisma                                  |
+| Database             | PostgreSQL (bisa diganti MySQL/MariaDB) |
 | Cache / Rate Limiter | Redis + ioredis + rate-limiter-flexible |
-| Validation | Zod |
-| Logging | Winston |
-| Security | Helmet, CORS, HPP, XSS |
-| Testing | Jest + Babel + Supertest |
-| Password Hashing | bcrypt |
+| Validation           | Zod                                     |
+| Logging              | Winston                                 |
+| Security             | Helmet, CORS, HPP, XSS                  |
+| Testing              | Jest + Babel + Supertest                |
+| Password Hashing     | bcrypt                                  |
 
 ---
 
@@ -202,11 +202,13 @@ Server berjalan di `http://localhost:3000`
 ### 7. Testing
 
 Setup Test Environment:
+
 ```bash
 cp .env.example .env.test.local
 ```
 
 Edit `.env.test.local`:
+
 ```bash
 DOCKER=false
 NODE_ENV=test
@@ -216,6 +218,7 @@ REDIS_PASSWORD=yourpassword
 ```
 
 Jalankan Test:
+
 ```bash
 # Migration database test
 npm run prisma:migrate:test
@@ -282,11 +285,13 @@ npm run dev:docker:down:volume
 ### Testing
 
 Setup Test Environment:
+
 ```bash
 cp .env.example .env.test.docker
 ```
 
 Edit `.env.test.docker`:
+
 ```bash
 DOCKER=false
 NODE_ENV=test
@@ -296,6 +301,7 @@ REDIS_PASSWORD=yourpassword
 ```
 
 build service:
+
 ```bash
 docker compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
@@ -307,6 +313,7 @@ npm run test:docker:up
 ```
 
 Proses ini akan otomatis:
+
 1. Menjalankan Postgres & Redis container khusus test
 2. Menjalankan Prisma migrate
 3. Menjalankan seeder test (jika dikonfigurasi)
@@ -358,33 +365,33 @@ docker compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
 
 ## Environment Variables
 
-| Variable | Keterangan | Contoh |
-|---|---|---|
-| `NODE_ENV` | Environment mode | `development` / `test` / `production` |
-| `DOCKER` | Apakah berjalan dalam Docker | `true` / `false` |
-| `APP_NAME` | Nama aplikasi (dipakai di rate limiter key) | `my-app` |
-| `APP_PORT` | Port server | `3000` |
-| `APP_URL` | Base URL aplikasi | `http://localhost:3000` |
-| `FRONTEND_URL` | URL frontend (CORS allow) | `http://localhost:5173` |
-| `DATABASE_URL` | Connection string Prisma | `postgresql://...` |
-| `DB_HOST` | Host database | `localhost` |
-| `DB_USER` | Username database | `postgres` |
-| `DB_PORT` | Port database | `5432` |
-| `DB_PASSWORD` | Password database | `secret` |
-| `DB_NAME` | Nama database | `mydb` |
-| `JWT_ACCESS_SECRET` | Secret untuk access token | (string panjang acak) |
-| `JWT_ACCESS_EXPIRE` | Masa berlaku access token | `1h` |
-| `JWT_REFRESH_SECRET` | Secret untuk refresh token | (string panjang acak) |
-| `JWT_REFRESH_EXPIRE` | Masa berlaku refresh token | `7d` |
-| `SESSION_SECRET` | Secret untuk session | (string panjang acak, min 32 char) |
-| `REDIS_HOST` | Host Redis | `localhost` |
-| `REDIS_PORT` | Port Redis | `6379` |
-| `REDIS_PASSWORD` | Password Redis | `secret` |
-| `REDIS_DB` | Nomor database Redis | `0` |
-| `CORS_ORIGIN` | Origin yang diizinkan (production) | `https://myapp.com` |
-| `HTTPONLY_COOKIES` | HttpOnly flag untuk cookie | `true` |
-| `SECURE_COOKIES` | Secure flag untuk cookie | `true` (production) |
-| `SAMESITE_COOKIES` | SameSite policy cookie | `lax` / `strict` / `none` |
+| Variable             | Keterangan                                  | Contoh                                |
+| -------------------- | ------------------------------------------- | ------------------------------------- |
+| `NODE_ENV`           | Environment mode                            | `development` / `test` / `production` |
+| `DOCKER`             | Apakah berjalan dalam Docker                | `true` / `false`                      |
+| `APP_NAME`           | Nama aplikasi (dipakai di rate limiter key) | `my-app`                              |
+| `APP_PORT`           | Port server                                 | `3000`                                |
+| `APP_URL`            | Base URL aplikasi                           | `http://localhost:3000`               |
+| `FRONTEND_URL`       | URL frontend (CORS allow)                   | `http://localhost:5173`               |
+| `DATABASE_URL`       | Connection string Prisma                    | `postgresql://...`                    |
+| `DB_HOST`            | Host database                               | `localhost`                           |
+| `DB_USER`            | Username database                           | `postgres`                            |
+| `DB_PORT`            | Port database                               | `5432`                                |
+| `DB_PASSWORD`        | Password database                           | `secret`                              |
+| `DB_NAME`            | Nama database                               | `mydb`                                |
+| `JWT_ACCESS_SECRET`  | Secret untuk access token                   | (string panjang acak)                 |
+| `JWT_ACCESS_EXPIRE`  | Masa berlaku access token                   | `1h`                                  |
+| `JWT_REFRESH_SECRET` | Secret untuk refresh token                  | (string panjang acak)                 |
+| `JWT_REFRESH_EXPIRE` | Masa berlaku refresh token                  | `7d`                                  |
+| `SESSION_SECRET`     | Secret untuk session                        | (string panjang acak, min 32 char)    |
+| `REDIS_HOST`         | Host Redis                                  | `localhost`                           |
+| `REDIS_PORT`         | Port Redis                                  | `6379`                                |
+| `REDIS_PASSWORD`     | Password Redis                              | `secret`                              |
+| `REDIS_DB`           | Nomor database Redis                        | `0`                                   |
+| `CORS_ORIGIN`        | Origin yang diizinkan (production)          | `https://myapp.com`                   |
+| `HTTPONLY_COOKIES`   | HttpOnly flag untuk cookie                  | `true`                                |
+| `SECURE_COOKIES`     | Secure flag untuk cookie                    | `true` (production)                   |
+| `SAMESITE_COOKIES`   | SameSite policy cookie                      | `lax` / `strict` / `none`             |
 
 > **Catatan:** Di mode `development` dan `test`, semua origin CORS diizinkan. Di `production`, hanya yang ada di `CORS_ORIGIN` yang diizinkan.
 
@@ -406,7 +413,7 @@ datasource db {
 
 ```typescript
 // Ganti PrismaPg dengan PrismaMariaDb
-import { PrismaMariaDb } from '@prisma/adapter-mariadb'
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
   host: env.config.DB_HOST,
@@ -414,7 +421,7 @@ const adapter = new PrismaMariaDb({
   user: env.config.DB_USER,
   password: env.config.DB_PASSWORD,
   database: env.config.DB_NAME,
-})
+});
 ```
 
 3. Update `DATABASE_URL` di `.env`:
@@ -459,35 +466,35 @@ Contoh request model:
 ```typescript
 // contact-request.model.ts
 export type CreateContactRequest = {
-    first_name: string
-    last_name?: string
-    email?: string
-    phone?: string
-}
+  first_name: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
+};
 ```
 
 Contoh response model:
 
 ```typescript
 // contact-response.model.ts
-import { Contact } from "../../generated/prisma/client"
+import { Contact } from "../../generated/prisma/client";
 
 export type ContactResponse = {
-    id: string
-    first_name: string
-    last_name?: string | null
-    email?: string | null
-    phone?: string | null
-}
+  id: string;
+  first_name: string;
+  last_name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+};
 
 export function toContactResponse(contact: Contact): ContactResponse {
-    return {
-        id: contact.id,
-        first_name: contact.first_name,
-        last_name: contact.last_name,
-        email: contact.email,
-        phone: contact.phone,
-    }
+  return {
+    id: contact.id,
+    first_name: contact.first_name,
+    last_name: contact.last_name,
+    email: contact.email,
+    phone: contact.phone,
+  };
 }
 ```
 
@@ -496,23 +503,22 @@ export function toContactResponse(contact: Contact): ContactResponse {
 Buat file di `src/validation/contact.validation.ts`:
 
 ```typescript
-import { z } from "zod"
+import { z } from "zod";
 
 export class ContactValidation {
-    static readonly CREATE = z.object({
-        first_name: z.string().min(1).max(100),
-        last_name: z.string().max(100).optional(),
-        email: z.string().email().optional(),
-        phone: z.string().max(20).optional(),
-    })
+  static readonly CREATE = z.object({
+    first_name: z.string().min(1).max(100),
+    last_name: z.string().max(100).optional(),
+    email: z.string().email().optional(),
+    phone: z.string().max(20).optional(),
+  });
 
-    static readonly UPDATE = z.object({
-        id: z.string().uuid(),
-        first_name: z.string().min(1).max(100),
-        // ...
-    })
+  static readonly UPDATE = z.object({
+    id: z.string().uuid(),
+    first_name: z.string().min(1).max(100),
+    // ...
+  });
 }
-export type ContactRequest = z.infer<typeof ContactValidation.CREATE>;
 ```
 
 ### 4. Buat Service
@@ -520,23 +526,29 @@ export type ContactRequest = z.infer<typeof ContactValidation.CREATE>;
 Buat file di `src/service/contact.service.ts`:
 
 ```typescript
-import { prismaClient } from "../application/database"
-import { ResponseError } from "../error/service-response.error"
-import { Validation } from "../validation/validation"
-import { ContactValidation } from "../validation/contact.validation"
-import { CreateContactRequest } from "../model/contact/contact-request.model"
-import { ContactResponse, toContactResponse } from "../model/contact/contact-response.model"
+import { prismaClient } from "../application/database";
+import { ResponseError } from "../error/service-response.error";
+import { Validation } from "../validation/validation";
+import { ContactValidation } from "../validation/contact.validation";
+import { CreateContactRequest } from "../model/contact/contact-request.model";
+import {
+  ContactResponse,
+  toContactResponse,
+} from "../model/contact/contact-response.model";
 
 export class ContactService {
-    static async create(username: string, req: CreateContactRequest): Promise<ContactResponse> {
-        const data = Validation.validate(ContactValidation.CREATE, req)
+  static async create(
+    username: string,
+    req: CreateContactRequest,
+  ): Promise<ContactResponse> {
+    const data = Validation.validate(ContactValidation.CREATE, req);
 
-        const contact = await prismaClient.contact.create({
-            data: { ...data, username }
-        })
+    const contact = await prismaClient.contact.create({
+      data: { ...data, username },
+    });
 
-        return toContactResponse(contact)
-    }
+    return toContactResponse(contact);
+  }
 }
 ```
 
@@ -545,23 +557,23 @@ export class ContactService {
 Buat file di `src/controller/contact.controller.ts`:
 
 ```typescript
-import { NextFunction, Request, Response } from "express"
-import { success_handler } from "../web/http/web-response.http"
-import { ContactService } from "../service/contact.service"
-import { CreateContactRequest } from "../model/contact/contact-request.model"
+import { NextFunction, Request, Response } from "express";
+import { success_handler } from "../web/http/web-response.http";
+import { ContactService } from "../service/contact.service";
+import { CreateContactRequest } from "../model/contact/contact-request.model";
 
 export class ContactController {
-    static async create(req: Request, res: Response, next: NextFunction) {
-        try {
-            const request: CreateContactRequest = req.body
-            const username = (req as any).user?.username // dari auth middleware
+  static async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const request: CreateContactRequest = req.body;
+      const username = (req as any).user?.username; // dari auth middleware
 
-            const result = await ContactService.create(username, request)
-            return success_handler(res, "Contact created", result, 201)
-        } catch (e) {
-            next(e)
-        }
+      const result = await ContactService.create(username, request);
+      return success_handler(res, "Contact created", result, 201);
+    } catch (e) {
+      next(e);
     }
+  }
 }
 ```
 
@@ -573,13 +585,13 @@ export class ContactController {
 
 ```typescript
 // private-api-registry.route.ts
-import { ContactController } from "../../controller/contact.controller"
+import { ContactController } from "../../controller/contact.controller";
 
-privateRouter.post("/api/contacts", ContactController.create)
-privateRouter.get("/api/contacts", ContactController.list)
-privateRouter.get("/api/contacts/:id", ContactController.get)
-privateRouter.put("/api/contacts/:id", ContactController.update)
-privateRouter.delete("/api/contacts/:id", ContactController.remove)
+privateRouter.post("/api/contacts", ContactController.create);
+privateRouter.get("/api/contacts", ContactController.list);
+privateRouter.get("/api/contacts/:id", ContactController.get);
+privateRouter.put("/api/contacts/:id", ContactController.update);
+privateRouter.delete("/api/contacts/:id", ContactController.remove);
 ```
 
 ### 7. Buat Seeder (opsional)
@@ -588,7 +600,7 @@ Edit `prisma/seeds/index.seeds.ts`:
 
 ```typescript
 async function seed() {
-    await seedContacts()
+  await seedContacts();
 }
 ```
 
@@ -601,28 +613,32 @@ Buat `test/contact.e2e.test.ts` dengan skenario happy path dan edge case.
 Test file diletakkan di folder `test/` dengan ekstensi `.test.ts`.
 
 ```typescript
-import supertest from "supertest"
-import * as server from "../src/application/server"
+import supertest from "supertest";
+import * as server from "../src/application/server";
 
-describe('POST /api/example', () => {
-    it('should reject if request invalid', async () => {
-        const res = await supertest(server.webApp)
-            .post("/api/example")
-            .send({ username: "", password: "", name: "" })
+describe("POST /api/example", () => {
+  it("should reject if request invalid", async () => {
+    const res = await supertest(server.webApp)
+      .post("/api/example")
+      .send({ username: "", password: "", name: "" });
 
-        expect(res.status).toBe(400)
-        expect(res.body.errors).toBeDefined()
-    })
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toBeDefined();
+  });
 
-    it('should create user if request valid', async () => {
-        const res = await supertest(server.webApp)
-            .post("/api/example")
-            .send({ username: "testuser", password: "password123", name: "Test User" })
+  it("should create user if request valid", async () => {
+    const res = await supertest(server.webApp)
+      .post("/api/example")
+      .send({
+        username: "testuser",
+        password: "password123",
+        name: "Test User",
+      });
 
-        expect(res.status).toBe(201)
-        expect(res.body.data.username).toBe("testuser")
-    })
-})
+    expect(res.status).toBe(201);
+    expect(res.body.data.username).toBe("testuser");
+  });
+});
 ```
 
 ### 9. Tips Paging (untuk endpoint list)
@@ -630,20 +646,223 @@ describe('POST /api/example', () => {
 Gunakan `buildPaging()` dari `src/utils/page.utils.ts` dan type `Pagable<T>` dari `src/model/page.model.ts`:
 
 ```typescript
-import { buildPaging } from "../utils/page.utils"
-import { Pagable } from "../model/page.model"
-import { ContactResponse } from "../model/contact/contact-response.model"
+import { buildPaging } from "../utils/page.utils";
+import { Pagable } from "../model/page.model";
+import { ContactResponse } from "../model/contact/contact-response.model";
 
 // Di service:
-const total = await prismaClient.contact.count({ where })
-const contacts = await prismaClient.contact.findMany({ where, skip, take })
+const total = await prismaClient.contact.count({ where });
+const contacts = await prismaClient.contact.findMany({ where, skip, take });
 
 const result: Pagable<ContactResponse> = {
-    data: contacts.map(toContactResponse),
-    paging: buildPaging(page, size, total)
-}
-return result
+  data: contacts.map(toContactResponse),
+  paging: buildPaging(page, size, total),
+};
+return result;
 ```
+
+## Logging
+
+Logging menggunakan **Winston**. Semua log ditulis langsung via `logger` dari `src/application/logging.ts` tanpa wrapper tambahan.
+
+---
+
+### Log Levels
+
+| Level          | Kapan dipakai                                                        |
+| -------------- | -------------------------------------------------------------------- |
+| `logger.info`  | Operasi sukses (login, create, update, delete)                       |
+| `logger.warn`  | Anomali non-fatal (login gagal, rate limit, token invalid, conflict) |
+| `logger.error` | Error tidak terduga (500, exception tidak tertangani)                |
+
+---
+
+### Konvensi Field
+
+Setiap log entry mengikuti struktur berikut:
+
+```json
+{
+  "type": "domain:action",
+  "requestId": "uuid-v4",
+  "userId": "user-id atau anonymous",
+  "timestamp": "ISO 8601"
+}
+```
+
+| Field       | Keterangan                                                          |
+| ----------- | ------------------------------------------------------------------- |
+| `type`      | Identitas event, format `domain:action` atau `domain:action:status` |
+| `requestId` | ID unik per request, di-inject oleh `requestLogger` middleware      |
+| `userId`    | ID user yang sedang login, `anonymous` jika belum auth              |
+| `timestamp` | Waktu event dalam format ISO 8601                                   |
+
+---
+
+### Konvensi `type` Field
+
+| Pattern                | Contoh                                    |
+| ---------------------- | ----------------------------------------- |
+| `domain:action`        | `user:created`, `auth:logout`             |
+| `domain:action:status` | `auth:login:success`, `auth:login:failed` |
+| `security:event`       | `security:rate_limit_exceeded`            |
+
+---
+
+### Middleware Logging
+
+#### `requestLogger` — `src/web/middleware/logging.middleware.ts`
+
+Otomatis mencatat setiap HTTP request masuk dan response keluar.
+
+```json
+// logger.info — 2xx / 3xx
+{
+  "type": "http:request",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "method": "POST",
+  "url": "/api/auth/login",
+  "statusCode": 200,
+  "duration": "45ms",
+  "responseSize": "312b",
+  "ip": "127.0.0.1",
+  "userAgent": "Mozilla/5.0...",
+  "userId": "anonymous"
+}
+
+// logger.warn — 4xx
+{
+  "type": "http:request:warn",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "method": "POST",
+  "url": "/api/auth/login",
+  "statusCode": 401,
+  "duration": "12ms",
+  "responseSize": "89b",
+  "ip": "127.0.0.1",
+  "userAgent": "Mozilla/5.0...",
+  "userId": "anonymous"
+}
+
+// logger.error — 5xx
+{
+  "type": "http:request:error",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "method": "POST",
+  "url": "/api/auth/login",
+  "statusCode": 500,
+  "duration": "8ms",
+  "responseSize": "67b",
+  "ip": "127.0.0.1",
+  "userAgent": "Mozilla/5.0...",
+  "userId": "user-123"
+}
+```
+
+#### `security middleware` — `src/web/middleware/security.middleware.ts`
+
+Mencatat event keamanan seperti rate limit exceeded.
+
+```json
+// logger.warn — rate limit exceeded
+{
+  "type": "security:rate_limit_exceeded",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "anonymous",
+  "url": "/api/auth/login",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+
+// logger.warn — token invalid (auth middleware)
+{
+  "type": "auth:token:invalid",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "reason": "token_expired",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+```
+
+---
+
+### Controller Logging
+
+Controller hanya log di dua kondisi: **sukses** dan **catch block**.
+
+```json
+// logger.info — operasi sukses
+{
+  "type": "auth:login:success",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "user-123",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+
+// logger.warn — operasi gagal karena input / business rule
+{
+  "type": "auth:login:failed",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "reason": "invalid_credentials",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+
+// logger.error — error tidak terduga (catch block)
+{
+  "type": "auth:login:error",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "anonymous",
+  "reason": "Database connection refused",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+```
+
+---
+
+### Service Logging
+
+Service log untuk **business rule violation** dan **operasi penting** yang perlu diaudit.
+
+```json
+// logger.warn — business rule violation
+{
+  "type": "user:conflict",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "reason": "username_already_exists",
+  "username": "johndoe",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+
+// logger.info — resource berhasil dibuat
+{
+  "type": "user:created",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "user-123",
+  "username": "johndoe",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+
+// logger.info — resource berhasil diupdate / dihapus
+{
+  "type": "user:updated",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "userId": "user-123",
+  "timestamp": "2025-01-15T10:30:00.000Z"
+}
+```
+
+> **Catatan:** `requestId` di-pass dari controller ke service sebagai parameter,
+> sehingga semua log dari satu request bisa di-trace lewat `requestId` yang sama
+> di semua layer.
+
+---
+
+### Ringkasan Per Layer
+
+| Layer                 | Log apa                                  | Level               |
+| --------------------- | ---------------------------------------- | ------------------- |
+| `requestLogger`       | Semua HTTP request & response            | info / warn / error |
+| `security middleware` | Rate limit, token invalid                | warn                |
+| Controller            | Hasil operasi, error tidak terduga       | info / warn / error |
+| Service               | Business rule violation, operasi penting | info / warn         |
 
 ---
 
@@ -651,23 +870,23 @@ return result
 
 Template ini mengimplementasikan OWASP Top 10 guidelines:
 
-| Fitur | Library | Keterangan |
-|---|---|---|
-| Security Headers | Helmet | X-Frame-Options, CSP, HSTS, dll |
-| CORS | cors | Restrict origin di production |
-| Rate Limiting | rate-limiter-flexible | Berbeda untuk public/auth/private endpoint |
-| XSS Protection | xss | Sanitasi input sebelum masuk ke service |
-| HTTP Parameter Pollution | hpp | Cegah duplikasi query parameter |
-| Password Hashing | bcrypt | Salt 10 rounds |
-| Request Logging | Winston | Log setiap request dengan requestId |
-| Security Event Logging | Winston | Login success/fail, rate limit exceeded, dll |
+| Fitur                    | Library               | Keterangan                                   |
+| ------------------------ | --------------------- | -------------------------------------------- |
+| Security Headers         | Helmet                | X-Frame-Options, CSP, HSTS, dll              |
+| CORS                     | cors                  | Restrict origin di production                |
+| Rate Limiting            | rate-limiter-flexible | Berbeda untuk public/auth/private endpoint   |
+| XSS Protection           | xss                   | Sanitasi input sebelum masuk ke service      |
+| HTTP Parameter Pollution | hpp                   | Cegah duplikasi query parameter              |
+| Password Hashing         | bcrypt                | Salt 10 rounds                               |
+| Request Logging          | Winston               | Log setiap request dengan requestId          |
+| Security Event Logging   | Winston               | Login success/fail, rate limit exceeded, dll |
 
 ### Rate Limit Strategy
 
-| Endpoint | Limit | Per |
-|---|---|---|
-| Public | 100 req / 15 menit | IP |
-| Auth (login/register) | 10 req / 15 menit | IP |
+| Endpoint                | Limit              | Per    |
+| ----------------------- | ------------------ | ------ |
+| Public                  | 100 req / 15 menit | IP     |
+| Auth (login/register)   | 10 req / 15 menit  | IP     |
 | Private (authenticated) | 200 req / 15 menit | userId |
 
 > Di `development` dan `test`, rate limit lebih longgar secara otomatis, anda bisa mengatur rate limit di `src/web/middleware/security.middleware.ts`.
@@ -708,7 +927,10 @@ Semua response mengikuti format yang konsisten:
   "message": "Validation error",
   "errors": [
     { "path": "username", "message": "Username must be at least 1 characters" },
-    { "path": "password", "message": "Password must contain at least 8 characters" }
+    {
+      "path": "password",
+      "message": "Password must contain at least 8 characters"
+    }
   ]
 }
 ```

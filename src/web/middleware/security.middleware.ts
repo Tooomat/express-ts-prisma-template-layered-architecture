@@ -11,7 +11,7 @@ import { Request , Response, NextFunction } from "express"
 import helmet from "helmet";
 import { filterXSS } from 'xss'
 import hpp from "hpp"
-import { securityLogger } from "../../utils/logging.utils"
+import { logger } from "../../application/logging"
 
 const isDev = config.NODE_ENV === 'development'
 const isTest = config.NODE_ENV === 'test'
@@ -115,12 +115,13 @@ const createMiddleware = (
         const result = rejRes as RateLimiterRes
         const retryAfter = Math.ceil(result.msBeforeNext / 1000)
 
-        securityLogger.rateLimitExceeded(
-            req.ip ?? 'unknown',
-            (req as any).user?.id ?? null,
-            req.originalUrl,
-            (req as any).requestId
-        )
+        logger.warn({
+            type: "security:rate_limit_exceeded",
+            requestId: (req as any).requestId,
+            userId: (req as any).user?.id ?? 'anonymous',
+            url: req.originalUrl,
+            timestamp: new Date().toISOString()
+        })
         
         res.set('Retry-After', String(retryAfter))
         res.set('RateLimit-Limit', String(limiter.points))

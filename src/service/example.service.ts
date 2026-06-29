@@ -1,7 +1,7 @@
 import { prismaClient } from "../application/database";
-import { ExampleRequest } from "../model/example/example-request.model";
-import { ExampleResponse, toExampleResponse } from "../model/example/example-response.model";
+import { logger } from "../application/logging";
 import { ResponseError } from "../error/service-response.error";
+import { ExampleRequest, ExampleResponse, toExampleResponse } from "../model/example.model";
 import { ExampleValidation } from "../validation/example.validation";
 import { Validation } from "../validation/validation";
 import bcrypt from "bcrypt";
@@ -9,7 +9,7 @@ import bcrypt from "bcrypt";
 
 export class ExampleService {
 
-    static async service(req: ExampleRequest): Promise<ExampleResponse> {
+    static async service(req: ExampleRequest, requestId: string): Promise<ExampleResponse> {
         const validationReq = Validation.validate(ExampleValidation.EXAMPLESCHEMA, req)
 
         // check apakah username sudah ada
@@ -19,6 +19,13 @@ export class ExampleService {
             }
         })
         if (totalUserWithSameUsername !== 0) {
+            logger.warn({
+                type: "example:conflict",
+                requestId,
+                reason: "username_already_exists",
+                username: validationReq.username,
+                timestamp: new Date().toISOString()
+            })
             throw new ResponseError(409, "Username already exists") 
         }
 
@@ -28,6 +35,14 @@ export class ExampleService {
         // buat user baru
         const user = await prismaClient.user.create({
             data: validationReq
+        })
+
+        logger.info({
+            type: "example:created",
+            requestId,
+            userId: user.name,
+            username: user.username,
+            timestamp: new Date().toISOString()
         })
 
         return toExampleResponse(user)
